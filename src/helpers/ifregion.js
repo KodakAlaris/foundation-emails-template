@@ -10,12 +10,14 @@ module.exports = (region, options) => {
 
     // The current locale to build with is passed in
     // set by src/data/ka.js
-    if (!commandLineRegion) {
-        commandLineRegion = options.data.root.ka.region.toLowerCase();
-    }
+    if (options.data.root.ka.region) {
+        if (!commandLineRegion) {
+            commandLineRegion = options.data.root.ka.region.toLowerCase();
+        }
 
-    if (region.toLowerCase() === commandLineRegion) {
-        return options.fn(this);
+        if (region.toLowerCase() === commandLineRegion) {
+            return options.fn(this);
+        }
     }
 
     return options.inverse(this);
