@@ -2,7 +2,8 @@
   <h1>Email pages</h1>
   <!-- TODO: generate this list automatically. -->
   <ul style="padding-bottom: 20px">
-    <li><a href="confirm-email-address.html">Confirmation</a></li>
-    <li><a href="order-ready.html">Order Ready</a></li>
+    {{#each ka.pages}}
+      <li><a href={{this}}>{{this}}</a></li>
+    {{/each}}
   </ul>
 </div>
