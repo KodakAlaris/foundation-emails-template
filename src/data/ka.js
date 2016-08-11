@@ -1,12 +1,16 @@
 "use strict";
 
 
-const locale = process.env.npm_config_locale || "en-US";
-const [language, region] = locale.split("-");
+const data = { locale: process.env.npm_config_locale || "en-US" };
 
 
-module.exports = {
-    language,
-    locale,
-    region
-};
+if (-1 < data.locale.indexOf("-")) {
+    const [language, region] = data.locale.split("-");
+    data.language = language;
+    data.region = region;
+} else {
+    data.language = data.locale;
+}
+
+
+module.exports = data;

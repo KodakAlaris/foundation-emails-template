@@ -10,15 +10,29 @@ module.exports = options => {
 
     // The current locale to build with is passed in
     // set by src/data/ka.js
-    const locale = options.data.root.ka.locale;
+    let fileName = options.data.root.ka.locale;
 
     // The strings for a specific language will be stored globally once per
     // session.
     if (!strings) {
-        strings = require(`../i18n/${locale}.json`);
+        strings = require(`../i18n/${fileName}.json`);
+
+        // There might not be strings for a specific locale, but rather a more
+        // generic language.
+        if (!strings) {
+            fileName = options.data.root.ka.language;
+            strings = require(`../i18n/${fileName}.json`);
+        }
     }
 
     const key = options.fn(this);
-    const text = strings[key];
+
+    let text;
+    if (strings) {
+        text = strings[key] || `-&gt;${key}&lt;-`;
+    } else {
+        text = `LOCALE MISSING - '${fileName}'`;
+    }
+
     return `<span>${text}</span>`;
 };
