@@ -1,0 +1,13 @@
+<container>
+    {{> header}}
+</container>
+<container>
+    {{> content}}
+</container>
+<container>
+    {{#ifregion "de"}}
+        {{> footer-de}}
+    {{else}}
+        {{> footer}}
+    {{/ifregion}}
+</container>
