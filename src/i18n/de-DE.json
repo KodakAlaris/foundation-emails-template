@@ -1,5 +1,5 @@
 {
-    "conf-email-footer": "Dies ist die Footer",
-    "conf-email-main-content": "Willkommen in Deutschland!",
-    "conf-email-title": "Dies ist der Titel"
+    "footer": "Gesendet von Kodak Alaris",
+    "conf-email-main-content": "Bitte bestätigen Sie Ihre E-Mail-Adresse.",
+    "conf-email-title": "Email Bestätigung"
 }
