@@ -22,9 +22,9 @@ module.exports = (region, options) => {
 
     // The current locale to build with is passed in
     // set by src/data/ka.js
-    if (options.data.root.ka.region) {
+    if (options.data.root.ka.region && options.data.root.ka.region[0]) {
         if (!commandLineRegion) {
-            commandLineRegion = options.data.root.ka.region.toLowerCase();
+            commandLineRegion = options.data.root.ka.region[0].toLowerCase();
         }
 
         if (region.toLowerCase() === commandLineRegion) {

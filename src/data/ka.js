@@ -6,15 +6,22 @@ const path = require("path");
 
 
 // Locale information provided via command line or the default.
-const data = { locale: process.env.npm_config_locale || "en-US" };
+const localesArg = process.env.npm_config_locale || "en-US";
+const data = { locales: localesArg.split(",") };
 
-if (-1 < data.locale.indexOf("-")) {
-    const [language, region] = data.locale.split("-");
-    data.language = language;
-    data.region = region;
-} else {
-    data.language = data.locale;
-}
+data.locales.forEach((locale, i) => {
+    data.languages = data.languages || [];
+
+    if (-1 < locale.indexOf("-")) {
+        const [language, region] = locale.split("-");
+        data.languages[i] = language;
+
+        data.regions = data.regions || [];
+        data.regions[i] = region;
+    } else {
+        data.languages[i] = locale;
+    }
+});
 
 
 // This is the one tru elocation for generating file names that include a
@@ -41,15 +48,15 @@ function createLocalePageName(fileName) {
     // Sometimes we'll just get a string that's a path.
     if (typeof fileName === "string") {
         const {ext, name} = path.parse(fileName);
-        return `${name}_${data.locale}${ext}`;
+        return `${name}_${data.locales[0]}${ext}`;
     }
 
     // Other times an object that's either an fs pathObject or a gulp-rename
     // file information object (not quite the same thing).
     if (fileName.hasOwnProperty("basename")) { // gulp-rename
-        fileName.basename += `_${data.locale}`;
+        fileName.basename += `_${data.locales[0]}`;
     } else if (fileName.hasOwnProperty("base")) { // fs pathObject
-        fileName.base += `_${data.locale}`;
+        fileName.base += `_${data.locales[0]}`;
     }
 
     return fileName;
