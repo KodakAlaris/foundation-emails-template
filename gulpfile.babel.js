@@ -1,5 +1,6 @@
 import gulp     from 'gulp';
 import plugins  from 'gulp-load-plugins';
+import rename   from 'gulp-rename';
 import browser  from 'browser-sync';
 import rimraf   from 'rimraf';
 import panini   from 'panini';
@@ -12,6 +13,7 @@ import path     from 'path';
 import merge    from 'merge-stream';
 import beep     from 'beepbeep';
 import colors   from 'colors';
+import ka       from './src/data/ka.js';
 
 const $ = plugins();
 
@@ -55,6 +57,12 @@ function pages() {
       data: 'src/data'
     }))
     .pipe(inky())
+    .pipe(rename(path => {
+      if (path.basename !== "index") {
+        // path.basename += `_${ka.locale}`;
+        ka.createLocalePageName(path);
+      }
+    }))
     .pipe(gulp.dest('dist'));
 }
 
