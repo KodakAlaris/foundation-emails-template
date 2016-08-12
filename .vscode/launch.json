@@ -7,7 +7,7 @@
             "request": "launch",
             "program": "${workspaceRoot}/node_modules/gulp/bin/gulp.js",
             "stopOnEntry": false,
-            "args": ["--locale=en-US"],
+            "args": [],
             "cwd": "${workspaceRoot}",
             "preLaunchTask": null,
             "runtimeExecutable": null,
@@ -15,7 +15,8 @@
                 "--nolazy"
             ],
             "env": {
-                "NODE_ENV": "development"
+                "NODE_ENV": "development",
+                "npm_config_locale": "en-US,de-DE"
             },
             "externalConsole": false,
             "sourceMaps": false,
