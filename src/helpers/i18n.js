@@ -23,6 +23,11 @@ module.exports = function () { // Babel bug will incorrectly transform "argument
         // set by src/data/ka.js
         const options = arguments[arguments.length - 1];
 
+        // Was the --nolocale debug argument passed via commandline?
+        if (options.data.root.ka.debug.nolocale) {
+            return;
+        }
+
         // The strings for a specific language will be stored globally once per
         // session.
         if (!strings) {

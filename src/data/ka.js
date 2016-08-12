@@ -24,7 +24,14 @@ data.locales.forEach((locale, i) => {
 });
 
 
-// This is the one tru elocation for generating file names that include a
+// Debug setting that will remove all localized text. Helpful for finding text embedded in HTML or images.
+data.debug = data.debug || {};
+if (process.env.hasOwnProperty("npm_config_nolocale")) {
+    data.debug.nolocale = true;
+}
+
+
+// This is the one true location for generating file names that include a
 // locale.
 data.createLocalePageName = createLocalePageName;
 
