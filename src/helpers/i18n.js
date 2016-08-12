@@ -1,6 +1,7 @@
 "use strict";
 
 
+let localeMain;
 let strings;
 
 
@@ -13,26 +14,33 @@ let strings;
  * file; for example {{#i18n}}header-title{{/i18n}}.
  * @module
  */
-module.exports = function () { // Babel bug will incorrectly transform "arguments" in an arrow function into "_arguments".
+module.exports = function () { // Babel bug will incorrectly transform "arguments" in an arrow function into "_arguments", keep pre-ES2015 syntax.
     let text;
     try {
         // The current locale to build with is passed in
         // set by src/data/ka.js
+        debugger;
         const options = arguments[arguments.length - 1];
-        let stringsFileName = options.data.root.ka.locales[0];
 
         // The strings for a specific language will be stored globally once per
         // session.
         if (!strings) {
-            strings = require(`../i18n/${stringsFileName}.json`);
+            strings = {};
+            options.data.root.ka.locales.forEach((locale, i) => {
+                if (i === 0){
+                    localeMain = locale;
+                }
+
+                strings[locale] = require(`../i18n/${locale}.json`);
+            });
         }
 
         const key = options.fn(this);
 
-        if (strings) {
-            text = strings[key] || `-&gt;${key}&lt;-`;
+        if (strings && strings[localeMain]) {
+            text = strings[localeMain][key] || `-&gt;${key}&lt;-`;
         } else {
-            text = `LOCALE MISSING - '${stringsFileName}'`;
+            text = `-&gt;${localeMain}&lt;-`;
         }
     } catch (err) {
         console.log(`i18n.js - ${err.message || JSON.stringify(err)}`);
