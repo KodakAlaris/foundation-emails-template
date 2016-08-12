@@ -24,15 +24,15 @@ module.exports = (region, options) => {
 
     // The current locale to build with is passed in
     // set by src/data/ka.js
-    if (options.data.root.ka.region && options.data.root.ka.region[0]) {
+    if (options.data.root.ka.regions && options.data.root.ka.regions[0]) {
         if (!commandLineRegion) {
-            commandLineRegion = options.data.root.ka.region[0].toLowerCase();
+            commandLineRegion = options.data.root.ka.regions[0].toLowerCase();
         }
 
         if (region.toLowerCase() === commandLineRegion) {
-            return options.fn(this);
+            return options.fn(options.data.root); // Can't use "this" here as shown in handlebars examples because it will be transpiled to undefined. 
         }
     }
 
-    return options.inverse(this);
+    return options.inverse(options.data.root); // Can't use "this" here as shown in handlebars examples because it will be transpiled to undefined.
 };
