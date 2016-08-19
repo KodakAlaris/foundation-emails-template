@@ -20,6 +20,10 @@ const $ = plugins();
 // Look for the --production flag
 const PRODUCTION = !!(yargs.argv.production);
 
+// Location of the project files, set on the command line.
+let project = ka.project || "src";
+console.log (`gulpfile.babel.js - project location: ${project}`);
+
 // Declar var so that both AWS and Litmus task can use it.
 var CONFIG;
 
@@ -48,18 +52,17 @@ function clean(done) {
 // Compile layouts, pages, and partials into flat HTML files
 // Then parse using Inky templates
 function pages() {
-  return gulp.src('src/pages/**/*.html')
+  return gulp.src(`${project}/pages/**/*.html`)
     .pipe(panini({
-      root: 'src/pages',
-      layouts: 'src/layouts',
-      partials: 'src/partials',
+      root: `${project}/pages`,
+      layouts: `${project}/layouts`,
+      partials: `${project}/partials`,
       helpers: 'src/helpers',
       data: 'src/data'
     }))
     .pipe(inky())
     .pipe(rename(path => {
       if (path.basename !== "index") {
-        // path.basename += `_${ka.locale}`;
         ka.createLocalePageName(path);
       }
     }))
@@ -74,7 +77,7 @@ function resetPages(done) {
 
 // Compile Sass into CSS
 function sass() {
-  return gulp.src('src/assets/scss/app.scss')
+  return gulp.src(`${project}/assets/scss/app.scss`)
     .pipe($.if(!PRODUCTION, $.sourcemaps.init()))
     .pipe($.sass({
       includePaths: ['node_modules/foundation-emails/scss']
@@ -85,7 +88,7 @@ function sass() {
 
 // Copy and compress images
 function images() {
-  return gulp.src('src/assets/img/**/*')
+  return gulp.src(`${project}/assets/img/**/*`)
     .pipe($.imagemin())
     .pipe(gulp.dest('./dist/assets/img'));
 }
@@ -107,10 +110,10 @@ function server(done) {
 
 // Watch for file changes
 function watch() {
-  gulp.watch('src/pages/**/*.html').on('change', gulp.series(pages, inline, browser.reload));
-  gulp.watch(['src/layouts/**/*', 'src/partials/**/*', 'src/data/**/*']).on('change', gulp.series(resetPages, pages, inline, browser.reload));
-  gulp.watch(['../scss/**/*.scss', 'src/assets/scss/**/*.scss']).on('change', gulp.series(resetPages, sass, pages, inline, browser.reload));
-  gulp.watch('src/assets/img/**/*').on('change', gulp.series(images, browser.reload));
+  gulp.watch(`${project}/pages/**/*.html`).on('change', gulp.series(pages, inline, browser.reload));
+  gulp.watch([`${project}/layouts/**/*`, `${project}/partials/**/*`, 'src/data/**/*']).on('change', gulp.series(resetPages, pages, inline, browser.reload));
+  gulp.watch(['../scss/**/*.scss', `${project}/assets/scss/**/*.scss`]).on('change', gulp.series(resetPages, sass, pages, inline, browser.reload));
+  gulp.watch(`${project}/assets/img/**/*`).on('change', gulp.series(images, browser.reload));
 }
 
 // Inlines CSS into HTML, adds media query CSS into the <style> tag of the email, and compresses the HTML

@@ -1,6 +1,10 @@
 "use strict";
 
 
+const ka = require("../data/ka");
+const path = require("path");
+
+
 let localeMain;
 let strings;
 
@@ -37,7 +41,8 @@ module.exports = function () { // Babel bug will incorrectly transform "argument
                     localeMain = locale;
                 }
 
-                strings[locale] = require(`../i18n/${locale}.json`);
+                const requirePath = path.isAbsolute(ka.project) ? path.join(ka.project, `i18n/${locale}.json`) : `../i18n/${locale}.json`;
+                strings[locale] = require(requirePath);
             });
         }
 

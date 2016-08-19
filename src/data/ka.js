@@ -8,6 +8,7 @@ const path = require("path");
 // Locale information provided via command line or the default.
 const localesArg = process.env.npm_config_locale || "en-US";
 const data = { locales: localesArg.split(",") };
+const projectDir = process.env.npm_config_project || "src";
 
 data.locales.forEach((locale, i) => {
     data.languages = data.languages || [];
@@ -38,7 +39,7 @@ data.createLocalePageName = createLocalePageName;
 
 // Get all the file names that will be created. Used by index.html to generate
 // links to all of the pages.
-data.pages = fs.readdirSync("src/pages")
+data.pages = fs.readdirSync(path.join(projectDir, "pages"))
     .filter(item => {
         const {name} = path.parse(item);
         return name !== "index";
@@ -46,6 +47,10 @@ data.pages = fs.readdirSync("src/pages")
     .map(item => {
         return createLocalePageName(item);
     });
+
+
+// Specify the root location of the pages, layouts, partials, assets, and i18n directories.
+data.project = projectDir;
 
 
 module.exports = data;
